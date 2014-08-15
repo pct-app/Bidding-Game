@@ -1,0 +1,15 @@
+This project is a simple game where two people bid on a bottle.
+
+-Gameplay 
+Two players bid on a bottle and everytime one player outbids the other the bottle moves closer to that player. If the bottle gets to one of the players sides that player wins the game.
+
+Additionally, if one of the player makes a bid that is more than the amount of money they have left or they bid 0 or less than the other player wins by default.
+
+-Instructions
+In order to play the game, the players need to create a class that implements the interface Bidder and implement the methods calculateBid and getName.
+
+calculateBid - This method is where most of the work is done, it is here where you will come up with how you decide how much to bid each round.
+
+getName - This method is just used to see who wins the game. 
+
+One you and a partner have classes created the only other thing that needs changed is inside of BidLogic class you need to create an instance of your class as playerOne and the other person as playerTwo. 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ExampleBidderOne implements Bidder 
 {
 	@Override
-	public int calculateBet(ArrayList<Integer> yourMovesSoFar, ArrayList<Integer> theirMovesSoFar, int position) 
+	public int calculateBid(ArrayList<Integer> yourMovesSoFar, ArrayList<Integer> theirMovesSoFar, int position, int yourMoneyLeft, int theirMoneyLeft) 
 	{
 		return 10;
 	}

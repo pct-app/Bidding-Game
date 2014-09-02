@@ -1,6 +1,7 @@
 package edu.app.biddingchallenge;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BidLogic 
 {
@@ -9,13 +10,13 @@ public class BidLogic
 	 */
 	public static final int STARTING_AMOUNT = 100;
 	/**
-	 * The starting location of the bottle
-	 */
-	public static final int STARTING_POSITION = 6;
-	/**
 	 * The total number of positions 
 	 */
 	public static final int NUMBER_OF_POSITIONS = 11;
+	/**
+	 * The starting location of the bottle
+	 */
+	public static final int STARTING_POSITION = (NUMBER_OF_POSITIONS + 1) / 2;
 
 	public static void main(String[] args) 
 	{
@@ -46,69 +47,69 @@ public class BidLogic
 		displayRound(playerOneMoney, playerTwoMoney, 0, 0, (byte)0, currentPos, playerOne, playerTwo);
 		
 		// while you are not at the ends and both players have money left keep playing
-		while(currentPos != 1 && currentPos != 11 && playerOneMoney > 0 && playerTwoMoney > 0) 
+		while(currentPos != 1 && currentPos != NUMBER_OF_POSITIONS && playerOneMoney > 0 && playerTwoMoney > 0) 
 		{
 			byte roundWinner;
 			
-			// get the players bets
-			int playerOneBet = playerOne.calculateBet(playerOneMoves, playerTwoMoves, currentPos);
-			int playerTwoBet = playerTwo.calculateBet(playerTwoMoves, playerOneMoves, currentPos);
+			// get the players bids
+			int playerOneBid = playerOne.calculateBid(playerOneMoves, playerTwoMoves, currentPos - 1, playerOneMoney, playerTwoMoney);
+			int playerTwoBid = playerTwo.calculateBid(playerTwoMoves, playerOneMoves, NUMBER_OF_POSITIONS - currentPos + 1, playerTwoMoney, playerOneMoney);
 			
 			// if someone makes an illegal bet other player wins
-			if(playerOneBet <= 0 || playerOneBet > playerOneMoney)
+			if(playerOneBid <= 0 || playerOneBid > playerOneMoney)
 			{
 				System.out.println("Illegal bet. " + playerTwo.getName() + " wins.");
 				break;
 			}
-			if(playerTwoBet <= 0 || playerTwoBet > playerTwoMoney)
+			if(playerTwoBid <= 0 || playerTwoBid > playerTwoMoney)
 			{
 				System.out.println("Illegal bet. " + playerOne.getName() + " wins.");
 				break;
 			}
 			
 			// add the bets to the lists
-			playerOneMoves.add(playerOneBet);
-			playerTwoMoves.add(playerTwoBet);
+			playerOneMoves.add(playerOneBid);
+			playerTwoMoves.add(playerTwoBid);
 			
 			// in the event of a tie randomly select a winner 
-			if (playerOneBet == playerTwoBet)
+			if (playerOneBid == playerTwoBid)
 			{
-				// get a random number 0-1
-				double decision = Math.random();
+				// New Random to select the winner
+				Random random = new Random();
 				
-				if(decision > 0.5)
+				if(random.nextBoolean())
 				{
-					playerOneMoney -= playerOneBet;
+					playerOneMoney -= playerOneBid;
 					roundWinner = 1;
 					currentPos--;
 				}
 				else
 				{
-					playerTwoMoney -= playerTwoBet;
+					playerTwoMoney -= playerTwoBid;
 					roundWinner = 2;
 					currentPos++;
 				}
 			}
-			else if (playerOneBet > playerTwoBet)
+			else if (playerOneBid > playerTwoBid)
 			{
-				playerOneMoney -= playerOneBet;
+				playerOneMoney -= playerOneBid;
 				roundWinner = 1;
 				currentPos--;
 			}
 			else 
 			{
-				playerTwoMoney -= playerTwoBet;
+				playerTwoMoney -= playerTwoBid;
 				roundWinner = 2;
 				currentPos++;
 			}
-			displayRound(playerOneMoney, playerTwoMoney, playerOneBet, playerTwoBet, roundWinner, currentPos, playerOne, playerTwo);
+			displayRound(playerOneMoney, playerTwoMoney, playerOneBid, playerTwoBid, roundWinner, currentPos, playerOne, playerTwo);
 		}
 		// display who one
 		if(currentPos == 1) {
 			System.out.println(playerOne.getName() + " Wins!");
 		}
 		// display who one
-		else if(currentPos == 11) {
+		else if(currentPos == NUMBER_OF_POSITIONS) {
 			System.out.println(playerTwo.getName() + " Wins!");
 		}
 		else {

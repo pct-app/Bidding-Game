@@ -31,6 +31,8 @@ public class BidLogic
 		// keep track of moves
 		ArrayList<Integer> playerOneMoves = new ArrayList<>();
 		ArrayList<Integer> playerTwoMoves = new ArrayList<>();
+		// flag for illegal move
+		boolean illegalMove = false;
 		
 		// Change this based on the Class they choice
 		playerOne = new ExampleBidderOne();
@@ -53,16 +55,18 @@ public class BidLogic
 			
 			// get the players bids
 			int playerOneBid = playerOne.calculateBid(playerOneMoves, playerTwoMoves, currentPos - 1, playerOneMoney, playerTwoMoney);
-			int playerTwoBid = playerTwo.calculateBid(playerTwoMoves, playerOneMoves, NUMBER_OF_POSITIONS - currentPos + 1, playerTwoMoney, playerOneMoney);
+			int playerTwoBid = playerTwo.calculateBid(playerTwoMoves, playerOneMoves, NUMBER_OF_POSITIONS - currentPos, playerTwoMoney, playerOneMoney);
 			
 			// if someone makes an illegal bet other player wins
 			if(playerOneBid <= 0 || playerOneBid > playerOneMoney)
 			{
+				illegalMove = true;
 				System.out.println("Illegal bet. " + playerTwo.getName() + " wins.");
 				break;
 			}
 			if(playerTwoBid <= 0 || playerTwoBid > playerTwoMoney)
 			{
+				illegalMove = true;
 				System.out.println("Illegal bet. " + playerOne.getName() + " wins.");
 				break;
 			}
@@ -104,15 +108,37 @@ public class BidLogic
 			}
 			displayRound(playerOneMoney, playerTwoMoney, playerOneBid, playerTwoBid, roundWinner, currentPos, playerOne, playerTwo);
 		}
-		// display who one
-		if(currentPos == 1) {
+	
+		if(illegalMove) return;
+		
+		// display who wins
+		if(currentPos == 1) 
+		{
 			System.out.println(playerOne.getName() + " Wins!");
 		}
-		// display who one
-		else if(currentPos == NUMBER_OF_POSITIONS) {
+		// display who wins
+		else if(currentPos == NUMBER_OF_POSITIONS) 
+		{
 			System.out.println(playerTwo.getName() + " Wins!");
 		}
-		else {
+		// if both people are out of money it is a tie
+		else if (playerOneMoney == 0 && playerTwoMoney == 0)
+		{
+			System.out.println("Tie game.");
+		}
+		// if player one spent all their money and player two has enough money left to win than player two wins
+		else if(playerOneMoney == 0 && playerTwoMoney >= NUMBER_OF_POSITIONS - currentPos)
+		{
+			System.out.println(playerOne.getName() + " is out of money, " + playerTwo.getName() + " Wins!");
+		}
+		// if player two spent all their money and player one has enough money left to win than player one wins
+		else if (playerTwoMoney == 0 && playerOneMoney >= currentPos)
+		{
+			System.out.println(playerTwo.getName() + " is out of money, " + playerOne.getName() + " Wins!");
+		}
+		// it is a tie
+		else 
+		{
 			System.out.println("Tie game.");
 		}
 	}

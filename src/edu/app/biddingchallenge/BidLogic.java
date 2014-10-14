@@ -29,8 +29,8 @@ public class BidLogic
 		Bidder playerOne;
 		Bidder playerTwo;
 		// keep track of moves
-		ArrayList<Integer> playerOneMoves = new ArrayList<>();
-		ArrayList<Integer> playerTwoMoves = new ArrayList<>();
+		ArrayList<Integer> playerOneMoves = new ArrayList<Integer>();
+		ArrayList<Integer> playerTwoMoves = new ArrayList<Integer>();
 		// flag for illegal move
 		boolean illegalMove = false;
 		
